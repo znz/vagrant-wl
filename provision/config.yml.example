@@ -1,0 +1,11 @@
+---
+caff_email: "Your email address"
+caff_keyid: "your keyid (the last 16 digits of your fingerprint)"
+caff_owner: "Your name"
+default_key: "your keyid"
+
+google_account: "your-google-account"
+google_password: "your-password"
+
+user: "vagrant"
+group: "vagrant"

@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: yes
+  pre_tasks:
+    - name: "install etckeeper"
+      apt: name=etckeeper
+  roles:
+    - znzj.ja_jp
+    - packages
+    - mail
+    - caff
+  vars_files:
+    - config.yml
+- hosts: all
+  become: no
+  roles:
+    - user-emacs
+    - user-gnupg
+  vars_files:
+    - config.yml

@@ -1,0 +1,33 @@
+---
+- name: install signing-party
+  apt: name=signing-party
+- name: install haveged
+  apt: name=haveged
+- name: caffrc
+  template:
+    src: caffrc.j2
+    dest: "/home/{{ user }}/.caffrc"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0644
+- name: ".caff"
+  file:
+    path: "/home/{{ user }}/.caff"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0700
+- name: ".caff/gnupghome"
+  file:
+    path: "/home/{{ user }}/.caff/gnupghome"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0700
+- name: "caff gpg.conf"
+  template:
+    src: caff-gpg.conf.j2
+    dest: "/home/{{ user }}/.caff/gnupghome/gpg.conf"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0600

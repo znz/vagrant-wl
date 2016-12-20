@@ -1,0 +1,15 @@
+---
+- name: install emacs
+  apt: name=emacs24,emacs24-el
+- name: install fonts
+  apt: name=fonts-ipafont,fonts-takao,fonts-vlgothic
+- name: install elisps
+  apt: name=apel,flim,semi,wl-beta,gnutls-bin,x-face-el,w3m-el,mu-cite,mhc
+- name: install rdtool-elisp
+  apt: name=rdtool-elisp
+- name: install hunspell
+  apt: name=hunspell,hunspell-en-us
+- name: install gnupg-agent
+  apt: name=gpgsm,gnupg-agent
+- name: install editorconfig
+  apt: name=editorconfig

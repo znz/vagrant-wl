@@ -1,0 +1,3 @@
+---
+- include: editor.yml tags=editor
+- include: emacs.yml tags=emacs

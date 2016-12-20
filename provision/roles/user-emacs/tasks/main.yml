@@ -1,0 +1,34 @@
+---
+- name: ".emacs.d"
+  file:
+    path: "/home/{{ user }}/.emacs.d"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0755
+- name: "~/.emacs.d/init.el"
+  copy:
+    src: init.el
+    dest: "/home/{{ user }}/.emacs.d/init.el"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0644
+- name: "pinentry-emacs"
+  git:
+    repo: https://github.com/ecraven/pinentry-emacs
+    dest: "/home/{{ user }}/.emacs.d/pinentry-emacs"
+    depth: 1
+- name: ".gnupg"
+  file:
+    path: "/home/{{ user }}/.gnupg"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0700
+- name: "~/.gnupg/gpg-agent.conf"
+  copy:
+    src: gpg-agent.conf
+    dest: "/home/{{ user }}/.gnupg/gpg-agent.conf"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0644

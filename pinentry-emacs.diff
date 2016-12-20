@@ -1,0 +1,21 @@
+diff --git a/pinentry-emacs b/pinentry-emacs
+index af69aa6..cfa185f 100755
+--- a/pinentry-emacs
++++ b/pinentry-emacs
+@@ -1,5 +1,7 @@
+ #!/bin/bash
++set -o pipefail
+ echo OK
++DIR=$(dirname "$0")
+ while read cmd rest
+ do
+     case $cmd in
+@@ -24,7 +26,7 @@ do
+             RES=$(emacsclient -e "(pinentry-emacs \"$DESC\" \"$PROMPT\" \"$OK\" \"$ERROR\")" | sed -e 's/^"//' -e 's/"$//')
+             if [ $? -ne 0 ]
+             then
+-                RES=$(lukspinentry)
++                RES=$("$DIR/lukspinentry")
+             fi
+             echo D $RES
+             echo OK

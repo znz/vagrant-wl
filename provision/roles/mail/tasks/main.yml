@@ -1,0 +1,41 @@
+---
+- name: install postfix
+  apt: name=postfix
+- name: purge exim
+  apt: name=exim* state=absent purge=yes
+- name: setup relayhost
+  lineinfile: dest=/etc/postfix/main.cf regexp='^relayhost =' line='relayhost = [smtp.gmail.com]:587'
+  notify:
+  - restart postfix
+- name: setup inet_interfaces
+  lineinfile: dest=/etc/postfix/main.cf regexp='^inet_interfaces =' line='inet_interfaces = loopback-only'
+  notify:
+  - restart postfix
+- name: install sasl_password
+  template: src=sasl_password.j2 dest=/etc/postfix/sasl_password owner=root group=root mode=0600
+  register: postfix_sasl_password
+  notify:
+  - restart postfix
+- name: postmap sasl_password
+  command: postmap hash:/etc/postfix/sasl_password
+  when: postfix_sasl_password|changed
+- name: setup smtp_sasl_auth_enable
+  lineinfile: dest=/etc/postfix/main.cf regexp='^smtp_sasl_auth_enable' line='smtp_sasl_auth_enable = yes'
+  notify:
+  - restart postfix
+- name: setup smtp_sasl_password_maps
+  lineinfile: dest=/etc/postfix/main.cf regexp='^smtp_sasl_password_maps' line='smtp_sasl_password_maps = hash:/etc/postfix/sasl_password'
+  notify:
+  - restart postfix
+- name: setup smtp_sasl_security_options
+  lineinfile: dest=/etc/postfix/main.cf regexp='^smtp_sasl_security_options' line='smtp_sasl_security_options = noanonymous'
+  notify:
+  - restart postfix
+- name: setup smtp_tls_security_level
+  lineinfile: dest=/etc/postfix/main.cf regexp='^smtp_tls_security_level' line='smtp_tls_security_level = may'
+  notify:
+  - restart postfix
+- name: setup smtp_tls_CAfile
+  lineinfile: dest=/etc/postfix/main.cf regexp='^smtp_tls_CAfile' line='smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt'
+  notify:
+  - restart postfix

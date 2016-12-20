@@ -1,0 +1,33 @@
+---
+- name: ".gnupg"
+  file:
+    path: "/home/{{ user }}/.gnupg"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0700
+- name: gpg.conf
+  template:
+    src: gpg.conf.j2
+    dest: "/home/{{ user }}/.gnupg/gpg.conf"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0600
+- name: dirmngr.conf
+  template:
+    src: dirmngr.conf.j2
+    dest: "/home/{{ user }}/.gnupg/dirmngr.conf"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0600
+- name: copy key rings
+  copy:
+    src: "{{ lookup('env',' HOME') }}/.gnupg/{{ item }}"
+    dest: "/home/{{ user }}/.gnupg/{{ item }}"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: 0600
+  with_items:
+    - "pubring.gpg"
+    - "secring.gpg"
+    - "trustdb.gpg"
