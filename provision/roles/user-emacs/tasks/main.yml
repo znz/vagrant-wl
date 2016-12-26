@@ -18,6 +18,22 @@
     repo: https://github.com/ecraven/pinentry-emacs
     dest: "/home/{{ user }}/.emacs.d/pinentry-emacs"
     depth: 1
+    update: no
+- name: "set pipefail in pinentry-emacs"
+  lineinfile:
+    dest: "/home/{{ user }}/.emacs.d/pinentry-emacs/pinentry-emacs"
+    insertbefore: '^echo OK$'
+    line: 'set -o pipefail'
+- name: "set DIR in pinentry-emacs"
+  lineinfile:
+    dest: "/home/{{ user }}/.emacs.d/pinentry-emacs/pinentry-emacs"
+    insertafter: '^echo OK$'
+    line: 'DIR=$(dirname "$0")'
+- name: "use DIR in pinentry-emacs"
+  lineinfile:
+    dest: "/home/{{ user }}/.emacs.d/pinentry-emacs/pinentry-emacs"
+    regexp: '^                RES=\$\(("\$DIR/)?lukspinentry(")?\)$'
+    line: '                RES=$("$DIR/lukspinentry")'
 - name: ".gnupg"
   file:
     path: "/home/{{ user }}/.gnupg"
